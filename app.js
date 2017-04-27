@@ -18,7 +18,7 @@ var mongoose      = require('mongoose');
 var db = mongoose.connection;
 
 // Multer middleware
-var uploads = multer({dest: "./uploads"});
+var upload = multer({dest: "./uploads"});
 
 // Routes modules
 var index = require('./routes/index');
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session middleware
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'wow',
   saveUninitialized: true,
   resave: false
 }));
