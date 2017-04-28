@@ -18,7 +18,7 @@ var mongoose      = require('mongoose');
 var db = mongoose.connection;
 
 // Multer middleware
-var upload = multer({dest: "./uploads"});
+var upload = multer({dest: 'uploads/'});
 
 // Routes modules
 var index = require('./routes/index');

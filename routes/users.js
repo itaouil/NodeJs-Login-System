@@ -1,7 +1,11 @@
+// Modules
 var express = require('express');
 var router  = express.Router();
 var multer  = require('multer');
-var upload  = multer({dest: "../uploads"});
+var upload  = multer({dest: '../uploads/'});
+
+// Mongoose Schema module
+var User = require('../models/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -19,7 +23,7 @@ router.get('/login', function(req, res, next) {
 });
 
 // Register Post
-router.post('/register', upload.single(),function(req, res, next) {
+router.post('/register', upload.single('profileImage'),function(req, res, next) {
 
   // Get fields values
   var name      = req.body.name;
@@ -30,10 +34,12 @@ router.post('/register', upload.single(),function(req, res, next) {
 
   // Check if file uploaded
   if (req.file) {
+    console.log("Got the file" + req.file.filename);
     var profileImage = req.file.filename;
   }
 
   else {
+    console.log("No file uploaded");
     var profileImage = "noimage.jpg";
   }
 
@@ -54,7 +60,25 @@ router.post('/register', upload.single(),function(req, res, next) {
   }
 
   else {
-    console.log("No errors");
+
+    var newUser = new User({
+
+      name          : name,
+      email         : email,
+      username      : username,
+      password      : password,
+      profileImage  : profileImage
+
+    });
+
+    User.createUser(newUser, function(err, user){
+      if (err) throw err;
+      console.log(user);
+    });
+
+    res.location('/');
+    res.redirect('/');
+
   }
 
 });
