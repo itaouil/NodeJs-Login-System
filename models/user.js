@@ -1,5 +1,6 @@
 // Modules
 var mongoose = require('mongoose');
+var bcrypt   = require('bcryptjs');
 
 // Mongoose ORM connection
 mongoose.connect('mongodb://localhost/nodeauth');
@@ -36,6 +37,16 @@ var UserSchema = mongoose.Schema({
 // Export
 var User = module.exports = mongoose.model('User', UserSchema);
 
-module.exports.createUser = function(newUser, callaback) {
-  newUser.save(callaback);
+module.exports.createUser = function(newUser, callback) {
+
+  // Encrypt password
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(newUser.password, salt, function(err, hash) {
+
+        newUser.password = hash;
+        newUser.save(callback);
+
+    });
+  });
+
 };

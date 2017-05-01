@@ -13,6 +13,7 @@ var multer        = require('multer');
 var flash         = require('connect-flash');
 var mongodb       = require('mongodb');
 var mongoose      = require('mongoose');
+var bcrypt        = require('bcryptjs');
 
 // Database connection instance
 var db = mongoose.connection;
