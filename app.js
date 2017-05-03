@@ -14,6 +14,7 @@ var flash         = require('connect-flash');
 var mongodb       = require('mongodb');
 var mongoose      = require('mongoose');
 var bcrypt        = require('bcryptjs');
+var User          = require('./models/user');
 
 // Database connection instance
 var db = mongoose.connection;
@@ -46,6 +47,7 @@ app.use(session({
   secret: 'wow',
   saveUninitialized: true,
   resave: false
+  // cookie: { secure: false }
 }));
 
 // Passport middleware
@@ -71,9 +73,15 @@ app.use(validator({
 }));
 
 // Express Messages validator
-app.use(require('connect-flash')());
+app.use(flash());
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// Global var for authentication
+app.get('*', function(req, res, next) {
+  res.locals.user = req.user || null;
   next();
 });
 

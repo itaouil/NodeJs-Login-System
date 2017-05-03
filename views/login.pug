@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  #{message}
   h2.page-header Login
   p Please login using the form below
   form(method="post", action="/users/login")
